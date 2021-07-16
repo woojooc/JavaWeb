@@ -11,12 +11,11 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
-//@ToString(exclude = {"user","item"} )   // lombok 상호참조 풀림
-public class OrderDetail {
+public class OrderGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,13 +23,21 @@ public class OrderDetail {
 
     private String status;
 
-    //private LocalDateTime orderAt;
+    private String orderType; //주문의 형태 ; 일괄 개별
 
-    private LocalDateTime arrivalDate;
+    private String revAddress;
 
-    private Integer quantity;
+    private String revName;
+
+    private String paymentType ;    //카드 현금
 
     private BigDecimal totalPrice;
+
+    private Integer totalQuantity;
+
+    private LocalDateTime orderAt;
+
+    private LocalDateTime arrivalDate;
 
     private LocalDateTime createdAt;
 
@@ -40,20 +47,6 @@ public class OrderDetail {
 
     private String updatedBy;
 
-    private Long itemId;
-
-    private Long orderGroupId;
-
-    /*
-    // N OrderDetail : 1 user
-    @ManyToOne
-    private User user;  // 알아서 user_id 와 연결됨
-    //private Long userId;
-
-    // N : 1
-    @ManyToOne
-    private Item item;
-    //private Long itemId;
-    */
+    private Long userId;
 
 }

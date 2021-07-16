@@ -8,29 +8,35 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
-//@ToString(exclude = {"user","item"} )   // lombok 상호참조 풀림
-public class OrderDetail {
+public class AdminUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String account;
+
+    private String password;
+
     private String status;
 
-    //private LocalDateTime orderAt;
+    private String role;
 
-    private LocalDateTime arrivalDate;
+    private LocalDateTime lastLoginAt;
 
-    private Integer quantity;
+    private LocalDateTime passwordUpdatedAt;
 
-    private BigDecimal totalPrice;
+    private int loginFailCount;
+
+    private LocalDateTime registeredAt;
+
+    private LocalDateTime unregisteredAt;
 
     private LocalDateTime createdAt;
 
@@ -40,20 +46,6 @@ public class OrderDetail {
 
     private String updatedBy;
 
-    private Long itemId;
 
-    private Long orderGroupId;
-
-    /*
-    // N OrderDetail : 1 user
-    @ManyToOne
-    private User user;  // 알아서 user_id 와 연결됨
-    //private Long userId;
-
-    // N : 1
-    @ManyToOne
-    private Item item;
-    //private Long itemId;
-    */
 
 }

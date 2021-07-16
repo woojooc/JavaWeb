@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import study.study.StudyApplicationTests;
-import study.study.model.entity.Item;
 import study.study.model.entity.User;
 
 import javax.transaction.Transactional;
@@ -19,8 +18,35 @@ public class UserRepositoryTest extends StudyApplicationTests {
     @Autowired
     private UserRepository userRepository;// = new UserRepository();
 
+
+
     @Test   //테스트 코드
     public void create() {
+
+        String account = "Test01";
+        String password = "Test01";
+        String status = "REGISTERED";
+        String email = "Test01@gmail.com";
+        String phoneNumber = "010-1111-2222";
+        LocalDateTime registeredAt = LocalDateTime.now();
+        LocalDateTime createdAt = LocalDateTime.now();
+        String createdBy = "AdminServer";
+
+        User user = new User();
+        user.setAccount(account);
+        user.setPassword(password);
+        user.setStatus(status);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setRegisteredAt(registeredAt);
+        user.setCreatedAt(createdAt);
+        user.setCreatedBy(createdBy);
+
+        User newUser = userRepository.save(user);
+
+        Assert.assertNotNull(newUser);
+
+        /*
         // String aql = insert into user (%s. %s. %d) value ( account, email, age);
         // JPA 는 오브젝트를 가지고 데이터 관리
 
@@ -34,21 +60,27 @@ public class UserRepositoryTest extends StudyApplicationTests {
 
         User newUser = userRepository.save(user);
         System.out.println("newUser : " +newUser);
+        */
     }
 
     @Test
     @Transactional
     public void read() {//@RequestParam Long id) {
 
+        User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
+
+        Assert.assertNotNull(user);
+
+        /*
         // select * from user where id = ?
         //Optional<User> user = userRepository.findById(1L);
         Optional<User> user = userRepository.findByAccount("TestUser03");
 
         user.ifPresent(selectUser -> {
-            /*
+            //
             System.out.println("user : "+selectUser);
             System.out.println("email : "+selectUser.getEmail());
-            //*/
+            //
 
             selectUser.getOrderDetailList().stream().forEach(detail-> {
                 //System.out.println(detail.getItemId());
@@ -58,8 +90,8 @@ public class UserRepositoryTest extends StudyApplicationTests {
             });
         });
 
-
         //return user.get();
+        */
     }
 
     @Test
