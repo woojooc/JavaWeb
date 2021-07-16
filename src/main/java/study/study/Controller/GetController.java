@@ -16,7 +16,7 @@ public class GetController {
     @GetMapping("/getParameter") //Localhost:8080/api/getParameter?id=1234&password=abcd
     public String getParameter(@RequestParam String id, @RequestParam(name = "password") String pwd) {
         //public String getParameter(@RequestParam String id, @RequestParam String password) {
-        String password = "bbb";  //로컬 변수도 사용은 가능
+        //String password = "bbb";  //로컬 변수도 사용은 가능
 
         System.out.println("id : " + id);
         System.out.println("pwd : " + pwd);
