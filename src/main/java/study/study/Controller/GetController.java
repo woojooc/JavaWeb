@@ -1,7 +1,8 @@
 package study.study.Controller;
 
-import study.study.model.SearchParam;
 import org.springframework.web.bind.annotation.*;
+import study.study.model.SearchParam;
+import study.study.model.network.Header;
 
 @RestController
 @RequestMapping("/api") //localhost:8080/api
@@ -32,8 +33,16 @@ public class GetController {
         System.out.println(searchParam.getEmail());
         System.out.println(searchParam.getPage());
 
-        // { "account" : "", "email" : "", "page" : 0 }
+        // { "account" : "", "email" : "", "page" : 0 }  자동으로 json으로 변형 시켜준다.
         return searchParam;
+    }
+
+    // 헤더가 잘 내려가는지 확인
+    @GetMapping("/header")
+    public Header getHeader() {
+
+        // {"resultCode: "OK", "description" : "OK"}
+        return Header.builder().resultCode("OK").description("OK").build();
     }
 
 }
