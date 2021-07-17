@@ -4,18 +4,18 @@ package study.study.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity                      // == table
 //@Table(name = "user")      //클래스와 이름이 같으면 생략 가능
+@ToString(exclude = {"orderGroup"})
 public class User {
 
         @Id
@@ -39,6 +39,10 @@ public class User {
         private String createdBy;
         private LocalDateTime updatedAt;
         private String updatedBy;
+
+        // User 1 : N OrderGroup
+        @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+        private List<OrderGroup> orderGroupList;
 
         /*
         // user 1 : M OrderDetail

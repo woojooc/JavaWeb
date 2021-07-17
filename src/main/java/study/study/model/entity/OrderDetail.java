@@ -3,11 +3,9 @@ package study.study.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -16,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 //@ToString(exclude = {"user","item"} )   // lombok 상호참조 풀림
+@ToString(exclude = {"orderGroup"})
 public class OrderDetail {
 
     @Id
@@ -42,7 +41,9 @@ public class OrderDetail {
 
     private Long itemId;
 
-    private Long orderGroupId;
+    // Detatil N: 1 Group
+    @ManyToOne
+    private OrderGroup orderGroup;  // mappedBY 의 변수명과 일치해야 한다.
 
     /*
     // N OrderDetail : 1 user
