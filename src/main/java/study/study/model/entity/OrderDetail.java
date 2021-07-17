@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 //@ToString(exclude = {"user","item"} )   // lombok 상호참조 풀림
-@ToString(exclude = {"orderGroup"})
+@ToString(exclude = {"orderGroup","item"})
 public class OrderDetail {
 
     @Id
@@ -39,9 +39,11 @@ public class OrderDetail {
 
     private String updatedBy;
 
-    private Long itemId;
+    //Detail N : 1 Item
+    @ManyToOne
+    private Item item;
 
-    // Detatil N: 1 Group
+    // Detail N: 1 Group
     @ManyToOne
     private OrderGroup orderGroup;  // mappedBY 의 변수명과 일치해야 한다.
 
