@@ -10,6 +10,7 @@ import study.study.model.network.response.UserApiResponse;
 import study.study.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class UserApiLogicService implements CrudInterface<UserApiRequest, UserApiResponse> {
@@ -44,7 +45,21 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
 
     @Override
     public Header<UserApiResponse> read(Long id) {
-        return null;
+
+        // id -> repository getONe, getById
+        Optional<User> optional = userRepository.findById(id);
+
+        // user -> userApiReponse return
+        return optional
+                .map(user -> response(user))
+                .orElseGet(()->Header.ERROR("데이터 없음")); // user가 없다면.
+
+        // 이렇게 한번에 람다로 표현할 수 있다.
+        /*
+        return userRepository.findById(id)
+                .map(user -> response(user))
+                .orElseGet(()->Header.ERROR("데이터 없음"));
+        */
     }
 
     @Override
