@@ -29,15 +29,15 @@ public class UserApiController implements CrudInterface<UserApiRequest,UserApiRe
 
         if(response.getResultCode() == "400")
         {
-            errorCode();
+            error400();
         }
 
         return response;
     }
 
 
-    @RequestMapping("/errorCode")
-    public ResponseEntity<UserApiResponse> errorCode() {
+    @RequestMapping("/error400")
+    public ResponseEntity<UserApiResponse> error400() {
 
         return new ResponseEntity<UserApiResponse>(HttpStatus.BAD_REQUEST);
     }
