@@ -2,6 +2,8 @@ package study.study.Controller.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import study.study.ifs.CrudInterface;
 import study.study.model.network.Header;
@@ -22,8 +24,24 @@ public class UserApiController implements CrudInterface<UserApiRequest,UserApiRe
     public Header<UserApiResponse> create(@RequestBody Header<UserApiRequest> request) {
 
         log.info("{}", request);     //info 레벨로 로그를 남기겠다.   request.toString()
-        return userApiLogicService.create(request);
+
+        Header<UserApiResponse> response = userApiLogicService.create(request);
+
+        if(response.getResultCode() == "400")
+        {
+            errorCode();
+        }
+
+        return response;
     }
+
+
+    @RequestMapping("/errorCode")
+    public ResponseEntity<UserApiResponse> errorCode() {
+
+        return new ResponseEntity<UserApiResponse>(HttpStatus.BAD_REQUEST);
+    }
+
 
     @Override
     @GetMapping("{id}")     //  /api/user/{id}

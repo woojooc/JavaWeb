@@ -41,6 +41,9 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
         return response(newItem);
     }
 
+
+
+
     @Override
     public Header<ItemApiResponse> read(Long id) {
 

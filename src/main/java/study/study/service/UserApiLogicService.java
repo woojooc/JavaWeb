@@ -27,6 +27,13 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
         // 1. request Data 가져오기
         UserApiRequest userApiRequest = request.getData();
 
+        User existingUser = userRepository.findByEmail(userApiRequest.getEmail());
+
+        if(existingUser != null)
+        {
+            return responseError("400");
+        }
+
         //2. USer 생성
         User user = User.builder()
                 .account(userApiRequest.getAccount())
@@ -119,5 +126,10 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
 
         //Header + data return
         return Header.OK(userApiResponse);
+    }
+
+    private Header<UserApiResponse> responseError(String errorCode) {
+
+        return Header.BadRequest(errorCode);
     }
 }

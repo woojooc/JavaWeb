@@ -27,6 +27,15 @@ public class Header<T> {
     // 계속해서 바뀌는 데이터, 제네릭 사용.
     private T data;
 
+    public static <T> Header<T> BadRequest(String errorCode) {
+        return (Header<T>) Header.builder()
+                .transactionTime(LocalDateTime.now())
+                .resultCode(errorCode)
+                .description("No")
+                .build();
+    }
+
+
     // OK
     public static <T> Header<T> OK() {
         return (Header<T>) Header.builder()
