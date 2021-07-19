@@ -1,14 +1,17 @@
 package study.study.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import study.study.ifs.CrudInterface;
 import study.study.model.network.Header;
+import study.study.service.BaseService;
 
-public abstract class CrudController<Req,Res> implements CrudInterface<Req,Res> {
+@Component
+public abstract class CrudController<Req,Res,Entity> implements CrudInterface<Req,Res> {
 
     @Autowired(required = false)
-    protected CrudInterface<Req, Res> baseService;
+    protected BaseService<Req, Res,Entity> baseService;
 
     @Override
     @PostMapping("")

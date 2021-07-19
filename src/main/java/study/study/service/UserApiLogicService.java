@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-public class UserApiLogicService implements CrudInterface<UserApiRequest, UserApiResponse> {
+public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse,User> {
+        //implements CrudInterface<UserApiRequest, UserApiResponse> {
 
-    @Autowired
-    private UserRepository userRepository;
+    //@Autowired
+    //private UserRepository userRepository;
 
     //1. request DATA 가져오기
     //2. USer 생성
@@ -28,7 +29,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
         // 1. request Data 가져오기
         UserApiRequest userApiRequest = request.getData();
 
-        User existingUser = userRepository.findByEmail(userApiRequest.getEmail());
+        User existingUser = baseRepository.findByEmail(userApiRequest.getEmail());
 
         if(existingUser != null)
         {
@@ -45,7 +46,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
                 .registeredAt(LocalDateTime.now())
                 .build();
 
-        User newUser = userRepository.save(user);
+        User newUser = baseRepository.save(user);
 
         //3. 생성된 데이터 기준으로 -> UserApiResponse return
         return response(newUser);
@@ -78,7 +79,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
         UserApiRequest userApiRequest = request.getData();
 
         //2 id -> user 데이터 찾기
-        Optional<User> optional = userRepository.findById(userApiRequest.getId());
+        Optional<User> optional = baseRepository.findById(userApiRequest.getId());
 
         return optional.map(user -> {
             // 3  data  ->  update
@@ -90,7 +91,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
                     .setUnregisteredAt(userApiRequest.getUnregisteredAt());
             return user;        // DB 반영 x
                 })
-                .map(user -> userRepository.save(user)) // update 해당 id 에대해서 -> newUser 반환
+                .map(user -> baseRepository.save(user)) // update 해당 id 에대해서 -> newUser 반환
                 .map(updateUser -> response(updateUser))            // 4 userApiResponse 만들어준다.
                 .orElseGet(()->Header.ERROR("데이터 없음"));
 

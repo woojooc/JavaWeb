@@ -1,22 +1,20 @@
 package study.study.Controller.api;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import study.study.Controller.CrudController;
+import study.study.model.entity.User;
 import study.study.model.network.request.UserApiRequest;
 import study.study.model.network.response.UserApiResponse;
-import study.study.service.UserApiLogicService;
-
-import javax.annotation.PostConstruct;
 
 @Slf4j  // log 파일
 @RestController
 @RequestMapping("/api/user")    //이 주소를 가지는 컨트롤러
-public class UserApiController extends CrudController<UserApiRequest,UserApiResponse> {
+public class UserApiController extends CrudController<UserApiRequest,UserApiResponse, User> {
         //implements CrudInterface<UserApiRequest,UserApiResponse> {
 
+    /*
     @Autowired
     private UserApiLogicService userApiLogicService;
 
@@ -24,6 +22,7 @@ public class UserApiController extends CrudController<UserApiRequest,UserApiResp
     public void init() {
         this.baseService = userApiLogicService;
     }
+*/
 
     /*
     @Override
