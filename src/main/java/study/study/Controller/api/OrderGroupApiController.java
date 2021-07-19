@@ -2,20 +2,29 @@ package study.study.Controller.api;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import study.study.ifs.CrudInterface;
-import study.study.model.network.Header;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import study.study.Controller.CrudController;
 import study.study.model.network.request.OrderGroupApiRequest;
 import study.study.model.network.response.OrderGroupApiResponse;
 import study.study.service.OrderGroupApiLogicService;
 
+import javax.annotation.PostConstruct;
+
 @RestController
 @RequestMapping("/api/orderGroup")
-public class OrderGroupApiController implements CrudInterface<OrderGroupApiRequest, OrderGroupApiResponse> {
+public class OrderGroupApiController extends CrudController<OrderGroupApiRequest, OrderGroupApiResponse> {
+        //implements CrudInterface<OrderGroupApiRequest, OrderGroupApiResponse> {
 
     @Autowired
     private OrderGroupApiLogicService orderGroupApiLogicService;
 
+    @PostConstruct
+    public void init() {
+        this.baseService = orderGroupApiLogicService;
+    }
+
+    /*
     @Override
     @PostMapping("")
     public Header<OrderGroupApiResponse> create(@RequestBody Header<OrderGroupApiRequest> request) {
@@ -43,4 +52,6 @@ public class OrderGroupApiController implements CrudInterface<OrderGroupApiReque
 
         return orderGroupApiLogicService.delete(id);
     }
+
+     */
 }

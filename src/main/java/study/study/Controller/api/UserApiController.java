@@ -2,23 +2,30 @@ package study.study.Controller.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import study.study.ifs.CrudInterface;
-import study.study.model.network.Header;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import study.study.Controller.CrudController;
 import study.study.model.network.request.UserApiRequest;
 import study.study.model.network.response.UserApiResponse;
 import study.study.service.UserApiLogicService;
 
+import javax.annotation.PostConstruct;
+
 @Slf4j  // log 파일
 @RestController
 @RequestMapping("/api/user")    //이 주소를 가지는 컨트롤러
-public class UserApiController implements CrudInterface<UserApiRequest,UserApiResponse> {
+public class UserApiController extends CrudController<UserApiRequest,UserApiResponse> {
+        //implements CrudInterface<UserApiRequest,UserApiResponse> {
 
     @Autowired
     private UserApiLogicService userApiLogicService;
 
+    @PostConstruct
+    public void init() {
+        this.baseService = userApiLogicService;
+    }
+
+    /*
     @Override
     @PostMapping("")    // /api/user
     public Header<UserApiResponse> create(@RequestBody Header<UserApiRequest> request) {
@@ -67,4 +74,6 @@ public class UserApiController implements CrudInterface<UserApiRequest,UserApiRe
         log.info("delete id : {}", id);
         return userApiLogicService.delete(id);
     }
+
+     */
 }

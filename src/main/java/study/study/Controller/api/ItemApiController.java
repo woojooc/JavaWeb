@@ -1,20 +1,29 @@
 package study.study.Controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import study.study.ifs.CrudInterface;
-import study.study.model.network.Header;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import study.study.Controller.CrudController;
 import study.study.model.network.request.ItemApiRequest;
 import study.study.model.network.response.ItemApiResponse;
 import study.study.service.ItemApiLogicService;
 
+import javax.annotation.PostConstruct;
+
 @RestController
 @RequestMapping("/api/item")
-public class ItemApiController implements CrudInterface<ItemApiRequest, ItemApiResponse> {
+public class ItemApiController extends CrudController<ItemApiRequest, ItemApiResponse> {
+// implements CrudInterface<ItemApiRequest, ItemApiResponse> {
 
     @Autowired
     private ItemApiLogicService itemApiLogicService;
 
+    @PostConstruct
+    public void init() {                        //static 메서드가 실행되는것과 유사하게 작동.
+        this.baseService = itemApiLogicService;
+    }
+
+    /*
     @Override
     @PostMapping("")        // /api/item
     public Header<ItemApiResponse> create(@RequestBody Header<ItemApiRequest> request) {
@@ -42,4 +51,5 @@ public class ItemApiController implements CrudInterface<ItemApiRequest, ItemApiR
 
         return itemApiLogicService.delete(id);
     }
+    */
 }
