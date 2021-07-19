@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import study.study.model.enumclass.OrderType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -29,7 +30,8 @@ public class OrderGroup {
 
     private String status;
 
-    private String orderType; //주문의 형태 ; 일괄 개별
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType; //주문의 형태 ; 일괄 개별
 
     private String revAddress;
 

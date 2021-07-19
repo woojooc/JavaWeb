@@ -23,6 +23,7 @@ public class OrderGroupApiLogicService implements CrudInterface<OrderGroupApiReq
     public Header<OrderGroupApiResponse> create(Header<OrderGroupApiRequest> request) {
 
         OrderGroupApiRequest body = request.getData();
+
         OrderGroup orderGroup = OrderGroup.builder()
                 .status(body.getStatus())
                 .orderType(body.getOrderType())
@@ -81,6 +82,7 @@ public class OrderGroupApiLogicService implements CrudInterface<OrderGroupApiReq
     }
 
     public Header<OrderGroupApiResponse> resposne(OrderGroup orderGroup) {
+
         OrderGroupApiResponse body = OrderGroupApiResponse.builder()
                 .id(orderGroup.getId())
                 .status(orderGroup.getStatus())

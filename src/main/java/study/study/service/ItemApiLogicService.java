@@ -87,6 +87,9 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
 
     public Header<ItemApiResponse> response (Item item) {
 
+        //한글로 가져오기
+        //String statusTitle = item.getTitle();
+
         ItemApiResponse body = ItemApiResponse.builder()
                 .id(item.getId())
                 .status(item.getStatus())

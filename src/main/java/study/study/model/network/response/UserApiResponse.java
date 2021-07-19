@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import study.study.model.enumclass.UserStatus;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ public class UserApiResponse {
 
     private String password;        //암호화되어서 처리될 수 있음. 따로 응답 요청 따로 클래스 관리하는 것이 좋다.
 
-    private String status;
+    private UserStatus status;
 
     private String email;
 

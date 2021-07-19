@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import study.study.model.enumclass.UserStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,7 +33,9 @@ public class User {
         private String account;
 
         private String password;
-        private String status;
+
+        @Enumerated(EnumType.STRING)
+        private UserStatus status;  //REGISTERED/ UNREGISTERED / WAITING
 
         private String email;
         private String phoneNumber;

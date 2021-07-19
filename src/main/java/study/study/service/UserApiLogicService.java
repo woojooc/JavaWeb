@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import study.study.ifs.CrudInterface;
 import study.study.model.entity.User;
+import study.study.model.enumclass.UserStatus;
 import study.study.model.network.Header;
 import study.study.model.network.request.UserApiRequest;
 import study.study.model.network.response.UserApiResponse;
@@ -38,7 +39,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
         User user = User.builder()
                 .account(userApiRequest.getAccount())
                 .password(userApiRequest.getPassword())
-                .status("REGISTERED")
+                .status(UserStatus.REGISTERED)
                 .phoneNumber(userApiRequest.getPhoneNumber())
                 .email(userApiRequest.getEmail())
                 .registeredAt(LocalDateTime.now())

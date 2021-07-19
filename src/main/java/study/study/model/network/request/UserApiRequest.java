@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import study.study.model.enumclass.UserStatus;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ public class UserApiRequest {
 
     private String  password;
 
-    private String status;
+    private UserStatus status;
 
     private String email;
 
