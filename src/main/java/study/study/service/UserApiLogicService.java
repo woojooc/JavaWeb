@@ -1,14 +1,11 @@
 package study.study.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import study.study.ifs.CrudInterface;
 import study.study.model.entity.User;
 import study.study.model.enumclass.UserStatus;
 import study.study.model.network.Header;
 import study.study.model.network.request.UserApiRequest;
 import study.study.model.network.response.UserApiResponse;
-import study.study.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -29,11 +26,11 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         // 1. request Data 가져오기
         UserApiRequest userApiRequest = request.getData();
 
-        User existingUser = baseRepository.findByEmail(userApiRequest.getEmail());
+         User existingUser = baseRepository.findByEmail(userApiRequest.getEmail());
 
         if(existingUser != null)
         {
-            return responseError("400");
+           return responseError("400");
         }
 
         //2. USer 생성
@@ -56,7 +53,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     public Header<UserApiResponse> read(Long id) {
 
         // id -> repository getONe, getById
-        Optional<User> optional = userRepository.findById(id);
+        Optional<User> optional = baseRepository.findById(id);
 
         // user -> userApiReponse return
         return optional
@@ -101,11 +98,11 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     public Header delete(Long id) {
 
         // id -> repository -> user
-        Optional<User> optional = userRepository.findById(id);
+        Optional<User> optional = baseRepository.findById(id);
 
         // repository -> delete
         return optional.map(user -> {
-                    userRepository.delete(user);
+            baseRepository.delete(user);
 
                     // response return
                     return Header.OK();
