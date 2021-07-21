@@ -1,13 +1,13 @@
 package study.study.sample;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import study.study.StudyApplicationTests;
 import study.study.model.entity.Category;
 import study.study.model.entity.Partner;
 import study.study.repository.CategoryRepository;
 import study.study.repository.PartnerRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,5 +1,8 @@
 package study.study.sample;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import study.study.StudyApplicationTests;
 import study.study.model.entity.Category;
 import study.study.model.entity.Item;
@@ -8,15 +11,13 @@ import study.study.model.enumclass.ItemStatus;
 import study.study.repository.CategoryRepository;
 import study.study.repository.ItemRepository;
 import study.study.repository.PartnerRepository;
-//import com.sun.xml.internal.ws.util.CompletedFuture;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+
+//import com.sun.xml.internal.ws.util.CompletedFuture;
 
 @Slf4j
 public class ItemSample extends StudyApplicationTests {

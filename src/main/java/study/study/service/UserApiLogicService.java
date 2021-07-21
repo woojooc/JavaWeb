@@ -26,12 +26,12 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         // 1. request Data 가져오기
         UserApiRequest userApiRequest = request.getData();
 
-         User existingUser = baseRepository.findByEmail(userApiRequest.getEmail());
+        //User existingUser = baseRepository.findByEmail(userApiRequest.getEmail());
 
-        if(existingUser != null)
-        {
-           return responseError("400");
-        }
+        //if(existingUser != null)
+        //{
+        //   return responseError("400");
+        //}
 
         //2. USer 생성
         User user = User.builder()
