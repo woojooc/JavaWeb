@@ -1,19 +1,31 @@
 package study.study.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import study.study.model.entity.User;
 import study.study.model.enumclass.UserStatus;
 import study.study.model.network.Header;
 import study.study.model.network.Pagination;
 import study.study.model.network.request.UserApiRequest;
 import study.study.model.network.response.UserApiResponse;
+import study.study.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+//409 중복 충돌 status code
+@ResponseStatus(code = HttpStatus.CONFLICT)
+class AlreadyExistsException extends RuntimeException {
+    public AlreadyExistsException(String message) {
+        super(message);
+    }
+}
 
 @Service
 public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse,User> {
@@ -21,6 +33,9 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
     //@Autowired
     //private UserRepository userRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     //1. request DATA 가져오기
     //2. USer 생성
@@ -138,6 +153,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         return userApiResponse;
     }
 
+    //내가만든거
     private Header<UserApiResponse> responseError(String errorCode) {
 
         return Header.BadRequest(errorCode);
@@ -165,4 +181,35 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         return Header.OK(userApiResponseList, pagination);
         //return Header.OK(userApiResponseList);
     }
+
+    public Header<UserApiResponse> checkEmailCreate(Header<UserApiRequest> request) {
+        //DB에 있는 User 데이터 가져오고
+        UserApiRequest userApiRequest = request.getData();
+
+        //위의 userApiRequest에서 Email부분만 가져와서 있는지 여부를 확인하고
+        Optional<User> checkEmail = userRepository.findByEmail(userApiRequest.getEmail());
+
+        //map을 쓰려고 했는데 에러가 발생해서 if문으로 대체
+        if (checkEmail.isPresent()){
+            throw new AlreadyExistsException("중복된 이메일 입니다.");
+        }
+        else {
+            User user = User.builder()
+                    .account(userApiRequest.getAccount())
+                    .password(userApiRequest.getPassword())
+                    .status(UserStatus.REGISTERED)
+                    .phoneNumber(userApiRequest.getPhoneNumber())
+                    .email(userApiRequest.getEmail())
+                    .registeredAt(LocalDateTime.now())
+                    .build();
+
+            User newUser= baseRepository.save(user);
+
+            //3.여러번 사용하므로 맨 아래에 메서드 작성했음
+
+            return Header.OK(response(newUser));
+
+        }
+    }
+
 }

@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import study.study.Controller.CrudController;
 import study.study.model.entity.User;
 import study.study.model.network.Header;
@@ -30,6 +28,15 @@ public class UserApiController extends CrudController<UserApiRequest,UserApiResp
     public Header<List<UserApiResponse>> search(@PageableDefault(sort = "id",direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("{}", pageable);
         return userApiLogicService.search(pageable);
+    }
+
+    @Override
+    @PostMapping("")    // /api/user
+    public Header<UserApiResponse> create(@RequestBody Header<UserApiRequest> request) {
+
+        log.info("{}", request);     //info 레벨로 로그를 남기겠다.   request.toString()
+
+        return userApiLogicService.checkEmailCreate(request);
     }
 
     /*
