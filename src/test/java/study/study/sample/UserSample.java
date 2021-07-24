@@ -1,7 +1,7 @@
 package study.study.sample;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import study.study.StudyApplicationTests;
 import study.study.model.entity.User;
@@ -42,8 +42,6 @@ public class UserSample extends StudyApplicationTests {
             log.info("{}",user);
             userRepository.save(user);
         }
-
-
     }
 
 

@@ -1,14 +1,19 @@
 package study.study.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import study.study.model.entity.User;
 import study.study.model.enumclass.UserStatus;
 import study.study.model.network.Header;
+import study.study.model.network.Pagination;
 import study.study.model.network.request.UserApiRequest;
 import study.study.model.network.response.UserApiResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse,User> {
@@ -46,7 +51,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         User newUser = baseRepository.save(user);
 
         //3. 생성된 데이터 기준으로 -> UserApiResponse return
-        return response(newUser);
+        //return response(newUser);
+        return Header.OK(response(newUser));
     }
 
     @Override
@@ -58,6 +64,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         // user -> userApiReponse return
         return optional
                 .map(user -> response(user))
+                //.map(userApiResponse -> Header.OK(userApiResponse))
+                .map(Header::OK)
                 .orElseGet(()->Header.ERROR("데이터 없음")); // user가 없다면.
 
         // 이렇게 한번에 람다로 표현할 수 있다.
@@ -90,6 +98,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
                 })
                 .map(user -> baseRepository.save(user)) // update 해당 id 에대해서 -> newUser 반환
                 .map(updateUser -> response(updateUser))            // 4 userApiResponse 만들어준다.
+                .map(Header::OK)
                 .orElseGet(()->Header.ERROR("데이터 없음"));
 
     }
@@ -110,7 +119,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
                 .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
-    private Header<UserApiResponse> response(User user) {
+    //private Header<UserApiResponse> response(User user) {
+    private UserApiResponse response(User user) {
         //user -> userApiResponse 만들어서 리턴
 
         UserApiResponse userApiResponse = UserApiResponse.builder()
@@ -124,11 +134,35 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
                 .build();
 
         //Header + data return
-        return Header.OK(userApiResponse);
+        //return Header.OK(userApiResponse);
+        return userApiResponse;
     }
 
     private Header<UserApiResponse> responseError(String errorCode) {
 
         return Header.BadRequest(errorCode);
+    }
+
+    public Header<List<UserApiResponse>> search(Pageable pageable) {
+
+        Page<User> users = baseRepository.findAll(pageable);
+
+        List<UserApiResponse> userApiResponseList = users.stream()
+                .map(user -> response(user))
+                .collect(Collectors.toList());
+        // List<UserApiReponse>
+        // Header <List<UserApiReponse>>
+        ///*
+        //이러한 객체를 통해서 필요한 정보만 보내도록 한다.  비밀번호 같은거 보호
+        Pagination pagination = Pagination.builder()
+                .totalPages(users.getTotalPages())
+                .totalElements(users.getTotalElements())
+                .currentPage(users.getNumber())
+                .currentElements(users.getNumberOfElements())
+                .build();
+        //*/
+
+        return Header.OK(userApiResponseList, pagination);
+        //return Header.OK(userApiResponseList);
     }
 }

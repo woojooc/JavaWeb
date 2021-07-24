@@ -27,6 +27,8 @@ public class Header<T> {
     // 계속해서 바뀌는 데이터, 제네릭 사용.
     private T data;
 
+    private Pagination pagination;
+
     public static <T> Header<T> BadRequest(String errorCode) {
         return (Header<T>) Header.builder()
                 .transactionTime(LocalDateTime.now())
@@ -52,6 +54,17 @@ public class Header<T> {
                 .resultCode("OK")
                 .description("OK")
                 .data(data)
+                .build();
+    }
+
+    // DATA OK
+    public static <T> Header<T> OK(T data,Pagination pagination) {
+        return (Header<T>) Header.builder()
+                .transactionTime(LocalDateTime.now())
+                .resultCode("OK")
+                .description("OK")
+                .data(data)
+                .pagination(pagination)
                 .build();
     }
 

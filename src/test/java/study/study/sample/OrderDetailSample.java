@@ -1,5 +1,6 @@
 package study.study.sample;
 
+import org.junit.jupiter.api.Test;
 import study.study.StudyApplicationTests;
 import study.study.model.entity.Item;
 import study.study.model.entity.OrderDetail;
@@ -11,7 +12,6 @@ import study.study.repository.OrderDetailRepository;
 import study.study.repository.OrderGroupRepository;
 import study.study.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -45,7 +45,6 @@ public class OrderDetailSample extends StudyApplicationTests {
         for(int j = 0; j < 1; j++){
             User user = userList.get(j);
             item(user);
-
         }
 
 
@@ -56,8 +55,6 @@ public class OrderDetailSample extends StudyApplicationTests {
                 item(user);
             }
         });
-
-
     }
 
 
