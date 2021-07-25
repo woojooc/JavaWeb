@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User,Long>{
     // 같은 번호 중 가장 최근의 것 리턴. 아이디 역순으로 핸드폰 번호 매칭
     User findFirstByPhoneNumberOrderByIdDesc(String phoneNumber);
 
-    User findByEmail_test(String email);
+    //User findByEmail(String email);
     Optional<User> findByEmail(String email);
 
     /*

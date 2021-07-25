@@ -11,6 +11,7 @@ import study.study.model.entity.User;
 import study.study.model.network.Header;
 import study.study.model.network.request.UserApiRequest;
 import study.study.model.network.response.UserApiResponse;
+import study.study.model.network.response.UserOrderInfoApiResponse;
 import study.study.service.UserApiLogicService;
 
 import java.util.List;
@@ -23,6 +24,12 @@ public class UserApiController extends CrudController<UserApiRequest,UserApiResp
 
     @Autowired
     private UserApiLogicService userApiLogicService;
+
+    @GetMapping("/{id}/orderInfo")
+    public Header<UserOrderInfoApiResponse> orderInfo(@PathVariable Long id) {
+
+        return userApiLogicService.orderInfo(id);
+    }
 
     @GetMapping("")
     public Header<List<UserApiResponse>> search(@PageableDefault(sort = "id",direction = Sort.Direction.DESC) Pageable pageable) {

@@ -6,12 +6,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import study.study.model.entity.OrderGroup;
 import study.study.model.entity.User;
 import study.study.model.enumclass.UserStatus;
 import study.study.model.network.Header;
 import study.study.model.network.Pagination;
 import study.study.model.network.request.UserApiRequest;
+import study.study.model.network.response.ItemApiResponse;
+import study.study.model.network.response.OrderGroupApiResponse;
 import study.study.model.network.response.UserApiResponse;
+import study.study.model.network.response.UserOrderInfoApiResponse;
 import study.study.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -36,6 +40,12 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrderGroupApiLogicService orderGroupApiLogicService;
+
+    @Autowired
+    private ItemApiLogicService itemApiLogicService;
 
     //1. request DATA 가져오기
     //2. USer 생성
@@ -135,7 +145,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
     }
 
     //private Header<UserApiResponse> response(User user) {
-    private UserApiResponse response(User user) {
+    public UserApiResponse response(User user) {
         //user -> userApiResponse 만들어서 리턴
 
         UserApiResponse userApiResponse = UserApiResponse.builder()
@@ -212,4 +222,34 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         }
     }
 
+    public Header<UserOrderInfoApiResponse> orderInfo(Long id) {
+
+        //User
+        User user = userRepository.getOne(id);
+        UserApiResponse userApiResponse = response(user);
+
+        //OrderGroup
+        List<OrderGroup> orderGroupList = user.getOrderGroupList();
+        List<OrderGroupApiResponse> orderGroupApiResponseList = user.getOrderGroupList().stream()
+                .map(orderGroup -> {
+                    OrderGroupApiResponse orderGroupApiResponse = orderGroupApiLogicService.resposne(orderGroup).getData();
+
+                    //item api response
+                    List<ItemApiResponse> itemApiResponseList = orderGroup.getOrderDetailList().stream()
+                            .map(detail -> detail.getItem())
+                            .map(item -> itemApiLogicService.response(item).getData())
+                            .collect(Collectors.toList());
+
+                    orderGroupApiResponse.setItemApiResponseList(itemApiResponseList);
+                    return orderGroupApiResponse;
+                })
+                .collect(Collectors.toList());
+
+        userApiResponse.setOrderGroupApiResponseList(orderGroupApiResponseList);
+
+        UserOrderInfoApiResponse userOrderInfoApiResponse = UserOrderInfoApiResponse.builder()
+                .userApiResponse(userApiResponse)
+                .build();
+        return Header.OK(userOrderInfoApiResponse);
+    }
 }

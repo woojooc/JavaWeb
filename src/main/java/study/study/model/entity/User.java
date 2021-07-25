@@ -57,6 +57,9 @@ public class User {
         @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
         private List<OrderGroup> orderGroupList;
 
+        @OneToOne
+        private Settlement settlement;
+
         /*
         // user 1 : M OrderDetail
         @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")   // OrderDetail 의 User user와 이름 동일해야한다
